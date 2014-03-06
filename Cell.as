@@ -14,8 +14,8 @@
 
 	public class Cell extends PixelMaskDisplayObject{
 		public var minH:int=80;
-		public var maxH:int;
-		public var difH:int;
+		public var maxH:int=200;
+		public var difH:int = maxH-minH;
 		public var curH:int=80;
 		
 		private var textOffsetY:int=15;
@@ -25,7 +25,7 @@
 		private var maskObj:Sprite;
 		var qd:Quad;
 		private var condition:int = 0;
-		public function Cell(val:String, bg=null) {
+		public function Cell(val:String, bg) {
 			// constructor code
 			super(-1,true);
 			maskObj = new Sprite();
@@ -51,9 +51,9 @@
 			tx.height = 200;
 			
 			//tx.validate();
-			trace(tx.height);
 			
-			q = new Quad(600,200, 0xaaaaaa);
+			
+			q = new Quad(600,200, bg);
 			
 			maskedObj.addChild(q);
 			maskedObj.addChild(tx);
@@ -63,40 +63,28 @@
 			this.mask = maskObj;
 			
 			
-			this.addEventListener(TouchEvent.TOUCH, onTouch);
+			
 			
 			
 			
 		}
-		private function onTouch(e:TouchEvent):void
+		public function touch():Boolean
         {
-            var touch:Touch = e.getTouch(stage);
-            if(touch)
-            {
-                if(touch.phase == TouchPhase.BEGAN)
-                {
-                             
-					if(maskObj.hitTest( touch.getLocation(this))) 
-					{
-						
-						if(condition == 0)//closed
-						{
-							TweenLite.to(qd,1,{scaleY: 20/8});
-							condition = 1;
-							curH=200;
-						}
-						else
-						{
-							curH=80;
-							TweenLite.to(qd,1,{scaleY: 1});
-							condition = 0;
-						}
-					}
-				}
- 
-                
-            }
- 
+			if(condition == 0)//closed
+			{
+				TweenLite.to(qd,0.5,{scaleY: 20/8});
+				condition = 1;
+				curH=200;
+				return true;
+			}
+			else
+			{
+				curH=80;
+				TweenLite.to(qd,0.5,{scaleY: 1});
+				condition = 0;
+				return false;
+			}
+					 
         }
 		override public function get height():Number
    		{

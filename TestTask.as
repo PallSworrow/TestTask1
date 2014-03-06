@@ -16,20 +16,11 @@
 			// constructor code
 			
 			
-			var container:ScrollContainer = new ScrollContainer();
-			this.addChild( container );
-			var xPosition:Number = 0;
-			for(var i:int = 0; i < 5; i++)
-			{
- 				var c:Cell = new Cell('sdf');
-    			c.y = xPosition;
-    			container.addChild( c );
-    			xPosition += c.minH + 10;
-			}
-			container.width = 600;
-			container.height = 400;
+			var sb:ScrollBox = new ScrollBox(['sdf','sdf','sdf','sdf','sdf','sdf','sdf','sdf','sdf','sdf']);
+			addChild(sb);
 			
 		}
+		
 		
 	}
 	
