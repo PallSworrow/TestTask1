@@ -14,13 +14,20 @@
 		
 		public function TestTask() {
 			// constructor code
-			var c1:Cell = new Cell('fhfh h hg h hghghg hgf h gh gfh gh gf h gfh gfh gf hf gh gfh fg h gfh g h gfh gf hg h gfh gfh gf hgf h gfh gfhgfh gfh ghgf hh gh gfhg');
-			
-			addChild(c1);
-			
-			c1.y=40;
 			
 			
+			var container:ScrollContainer = new ScrollContainer();
+			this.addChild( container );
+			var xPosition:Number = 0;
+			for(var i:int = 0; i < 5; i++)
+			{
+ 				var c:Cell = new Cell('sdf');
+    			c.y = xPosition;
+    			container.addChild( c );
+    			xPosition += c.minH + 10;
+			}
+			container.width = 600;
+			container.height = 400;
 			
 		}
 		

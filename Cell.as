@@ -16,6 +16,7 @@
 		public var minH:int=80;
 		public var maxH:int;
 		public var difH:int;
+		public var curH:int=80;
 		
 		private var textOffsetY:int=15;
 		private var textOffsetX:int=10;
@@ -75,27 +76,32 @@
                 if(touch.phase == TouchPhase.BEGAN)
                 {
                              
-					if(maskObj.hitTest( touch.getLocation(this)))
-					  
+					if(maskObj.hitTest( touch.getLocation(this))) 
 					{
-					
-					
-					if(condition == 0)//closed
-					{
-						TweenLite.to(qd,1,{scaleY: 20/8});
-						condition = 1;
+						
+						if(condition == 0)//closed
+						{
+							TweenLite.to(qd,1,{scaleY: 20/8});
+							condition = 1;
+							curH=200;
+						}
+						else
+						{
+							curH=80;
+							TweenLite.to(qd,1,{scaleY: 1});
+							condition = 0;
+						}
 					}
-					else
-					{
-						TweenLite.to(qd,1,{scaleY: 1});
-						condition = 0;
-					}}
-                }
+				}
  
                 
             }
  
         }
+		override public function get height():Number
+   		{
+        	return curH; // testStringUpdated
+    	}
 
 	}
 	
