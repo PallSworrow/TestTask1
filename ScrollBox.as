@@ -11,6 +11,7 @@
 	import com.greensock.TweenMax;
 	import flash.display.Shape;
 	import flash.events.Event;
+	import flash.geom.Point;
 	
 	public class ScrollBox extends Sprite{
 		
@@ -42,41 +43,59 @@
 			this.addEventListener(TouchEvent.TOUCH, onTouch);
 			moveMaker.addEventListener(Event.ENTER_FRAME,movement);
 		}
+		private var pressed:Boolean=false;
+		private var touchStep:int;
 		private function onTouch(e:TouchEvent):void
         {
 			 var touch:Touch = e.getTouch(stage);
-			 var touched:int = 0;//0 - nothing to move, 1- move up, 2- move down;
-			 var targPos:int=0;
+			 
 			 if(touch)
             {
                 if(touch.phase == TouchPhase.BEGAN)
                 {
-					for(var i:String in items)
-					{
-						TweenLite.to(items[i],0.5,{y:targPos});
-						
-						if(touch.isTouching(items[i]))
-						{
-							if(items[i].touch()) 
-							{
-								touched = 2;
-								setTarget(items[i].y,items[i].difH);
-								
-								leng+=items[i].difH;
-								
-							}
-							else
-							{
-								touched = 1;
-								leng-=items[i].difH;
-								//targetOffset = container.verticalScrollPosition - items[i].difH
-							}
-							container.readjustLayout();
-						}
-						targPos += items[i].height;
-					}
+					pressed = true;
+				}
+				if(touch.phase == TouchPhase.MOVED)
+                {
+					
+					touchStep = Math.abs(touch.globalX - touch.previousGlobalX)+Math.abs(touch.globalY - touch.previousGlobalY)
+					if(touchStep > 20)pressed = false;
+					trace(touchStep);
+				}
+				if(touch.phase == TouchPhase.ENDED && pressed)
+                {
+					Click(touch);
 					
 				}
+			}
+		}
+		private function Click(touch:Touch):void
+		{
+			var touched:int = 0;//0 - nothing to move, 1- move up, 2- move down;
+			 var targPos:int=0;
+			for(var i:String in items)
+			{
+				TweenLite.to(items[i],0.5,{y:targPos});
+					
+				if(touch.isTouching(items[i]))
+				{
+					if(items[i].touch()) 
+					{
+						touched = 2;
+						setTarget(items[i].y,items[i].difH);
+								
+						leng+=items[i].difH;
+								
+					}
+					else
+					{
+						touched = 1;
+						leng-=items[i].difH;
+						//targetOffset = container.verticalScrollPosition - items[i].difH
+					}
+					container.readjustLayout();
+				}
+					targPos += items[i].height;
 			}
 		}
 		private var targetOffset:int=-1;

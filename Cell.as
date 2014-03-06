@@ -48,10 +48,10 @@
 			tx.y = 15;
 			tx.wordWrap = true;
 			tx.text = val;
-			tx.height = 200;
+			//tx.height = 200;
 			
-			//tx.validate();
-			
+			tx.validate();
+			trace(tx.measureText(new Point()).x);	
 			
 			q = new Quad(600,200, bg);
 			
