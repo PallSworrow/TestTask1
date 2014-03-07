@@ -4,24 +4,43 @@
  
     import starling.display.Sprite;
 	import starling.display.*;
-    import starling.events.*;
+    import flash.events.Event;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
     
 	public class TestTask extends Sprite{
 
 		protected var listLength:int=0;
-		
+		private var textFile:XML;
 		public function TestTask() {
 			// constructor code
+			readFile();
 			
 			
-			var sb:ScrollBox = new ScrollBox(['sdf','sdf','sdf','sdf','sdf','sdf','sdf','sdf','sdf','sdf']);
-			addChild(sb);
 			
 		}
-		
-		
+		private function readFile():void
+		{
+			var loader:URLLoader = new URLLoader(new URLRequest("assets/text.xml"));
+			loader.addEventListener(Event.COMPLETE, xmlLoaded);
+		}
+		private function xmlLoaded(e:Event):void 
+		{
+			textFile = new XML(e.target.data);
+			
+			
+			var textArray:Array = new Array();
+
+			textFile.news.
+			(
+              textArray.push(toString())
+			); 
+			
+			var sb:ScrollBox = new ScrollBox(textArray);
+			addChild(sb);
+        }
 	}
 	
 }

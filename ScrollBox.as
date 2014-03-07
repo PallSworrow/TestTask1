@@ -15,12 +15,14 @@
 	
 	public class ScrollBox extends Sprite{
 		
+		
+		
 		private var items:Vector.<Cell> = new Vector.<Cell>();
 		private var container:ScrollContainer = new ScrollContainer();
 		private var moveMaker:Shape = new Shape();
 		public function ScrollBox(input:Array) {
 			// constructor code
-			
+			//trace(tx);
 			
 			
 			this.addChild( container );
@@ -60,7 +62,7 @@
 					
 					touchStep = Math.abs(touch.globalX - touch.previousGlobalX)+Math.abs(touch.globalY - touch.previousGlobalY)
 					if(touchStep > 20)pressed = false;
-					trace(touchStep);
+					
 				}
 				if(touch.phase == TouchPhase.ENDED && pressed)
                 {
@@ -113,7 +115,11 @@
 			if(targetOffset >= 0)
 			{
 				
-				if(container.verticalScrollPosition + step > container.maxVerticalScrollPosition) container.verticalScrollPosition =container.maxVerticalScrollPosition; 
+				if(container.verticalScrollPosition + step > container.maxVerticalScrollPosition) 
+				{
+					targetOffset=-1;
+					container.verticalScrollPosition =container.maxVerticalScrollPosition;
+				}
 				else
 				{
 					if(targetOffset - container.verticalScrollPosition > step)

@@ -3,20 +3,19 @@
 	import starling.extensions.pixelmask.PixelMaskDisplayObject;
 	import starling.display.Quad;
 	import starling.display.Sprite;
-	import starling.text.TextField;
-	import flash.text.TextFormat;
 	import feathers.controls.text.TextFieldTextRenderer;
 	import flash.events.MouseEvent;
 	import starling.events.*;
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 	import flash.geom.Point;
+	import Src.TextBox;
 
 	public class Cell extends PixelMaskDisplayObject{
-		public var minH:int=80;
-		public var maxH:int=200;
-		public var difH:int = maxH-minH;
-		public var curH:int=80;
+		public var minH:int=75;
+		public var maxH:int;
+		public var difH:int;
+		public var curH:int=minH;
 		
 		private var textOffsetY:int=15;
 		private var textOffsetX:int=10;
@@ -28,35 +27,34 @@
 		public function Cell(val:String, bg) {
 			// constructor code
 			super(-1,true);
+			
+			var txt:TextBox = new TextBox(val, 580);
+			txt.x = 10;
+			txt.y = 15;
+			this.maxH = txt.tf.measureText().y+15;
+			this.difH = maxH- minH;
+			
 			maskObj = new Sprite();
-			maskObj.height = 200;
+			maskObj.height = maxH;
 			
 			var q:Quad
-			q = new Quad(0.1,200, 0xaaaaaa);
+			q = new Quad(0.1,maxH, 0xaaaaaa);
 			q.alpha = 0;
 			maskObj.addChild(q);
-			qd = new Quad(600,80, 0xaaaaaa);
+			qd = new Quad(600,minH, 0xaaaaaa);
 			
 			maskObj.addChild(qd);
 			
 			
 			
+		
 			maskedObj = new Sprite();
-			var tx:TextFieldTextRenderer = new TextFieldTextRenderer();
-			tx.width = 580;
-			tx.x = 10;
-			tx.y = 15;
-			tx.wordWrap = true;
-			tx.text = val;
-			//tx.height = 200;
+			q = new Quad(600,maxH+60, bg);
 			
-			tx.validate();
-			trace(tx.measureText(new Point()).x);	
-			
-			q = new Quad(600,200, bg);
 			
 			maskedObj.addChild(q);
-			maskedObj.addChild(tx);
+			
+			maskedObj.addChild(txt);
 			
 			
 			addChild(maskedObj);
@@ -72,14 +70,14 @@
         {
 			if(condition == 0)//closed
 			{
-				TweenLite.to(qd,0.5,{scaleY: 20/8});
+				TweenLite.to(qd,0.5,{scaleY: maxH/minH});
 				condition = 1;
-				curH=200;
+				curH=maxH;
 				return true;
 			}
 			else
 			{
-				curH=80;
+				curH=minH;
 				TweenLite.to(qd,0.5,{scaleY: 1});
 				condition = 0;
 				return false;
@@ -88,7 +86,8 @@
         }
 		override public function get height():Number
    		{
-        	return curH; // testStringUpdated
+        	//return qd.height;
+			return curH; // testStringUpdated
     	}
 
 	}
